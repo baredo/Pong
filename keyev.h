@@ -7,7 +7,9 @@
 #include <linux/input.h>
 #include <string.h>
 #include <stdio.h>
+#include <sys/select.h>
 
+int init_key_ev();
 int get_key_ev();
 
 #endif
