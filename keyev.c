@@ -9,40 +9,30 @@ int init_key_ev(){
 	} return fd;
 }
 
-int get_key_ev(int fd){
+int get_key_ev(int fd,int t_out){
 
 	struct input_event ev;
 	ssize_t n;
 	int pos=0;
-		
+	
+	//Iniciamos parametros de select	
 	fd_set read_fds;
 	FD_SET(fd, &read_fds);
 	
-	//Set timeout to 1.0 seconds
+	//Ponemos el maximo tiempo de espera
 	struct timeval timeout;
-	timeout.tv_sec = 5;
-	timeout.tv_usec = 0;
+	int st_out = t_out/1000;
+	timeout.tv_sec = st_out;
+	timeout.tv_usec = t_out-st_out*1000;
 	
-	// Wait for input to become ready or until the time out; the first parameter is
-	// 1 more than the largest file descriptor in any of the sets
+	// Select comprueba cuando el teclado esta listo para ser leido(hay una entrada de datos)
+	// Una vez hecho esto leemos esa entrada con read
 	if (select(fd + 1, &read_fds, NULL, NULL, &timeout) == 1){
 		n = read(fd, &ev, sizeof ev);
 		if (ev.type == EV_KEY && ev.value >= 1 && ev.value <= 2)return (int)ev.code;
-		printf("Tipo: %d,\tValor: %d,\tCodigo: %d\n",(int)ev.type,(int)ev.value,(int)ev.code);
 	}else{
 	
 	}
-/*
-if (n == (ssize_t)-1) {
-if (errno == EINTR) continue; else break;
-} else if (n != sizeof ev) {
-errno = EIO;
-break;
-*/
-//fprintf(stderr, "%s.\n", strerror(errno));
-//if (ev.type == EV_KEY){
-//fflush(stdout);
-//return (int)ev.code;
 }
 
 
