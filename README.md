@@ -10,8 +10,8 @@
 #-------------------------------------------------
 # Principales.
 # Manejar eventos del teclado				[x]
-# Manejar la interfaz en la terminal		[75%]
-# Añadir la mecanica del juego				[25%]
+# Manejar la interfaz en la terminal		[x]
+# Añadir la mecanica del juego				[60%]
 # Añadir inteligencia artificial basica		[]
 
 # Secundarios.

@@ -7,6 +7,7 @@
 #include <linux/input.h>
 #include <string.h>
 #include <stdio.h>
+#include <time.h>
 #include <sys/select.h>
 
 int init_key_ev();//Retorna el descriptor de fichero del teclado

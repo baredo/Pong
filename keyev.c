@@ -10,28 +10,30 @@ int init_key_ev(){
 }
 
 int get_key_ev(int fd,int t_out){
-
 	struct input_event ev;
 	ssize_t n;
 	int pos=0;
-	
+
 	//Iniciamos parametros de select	
 	fd_set read_fds;
 	FD_SET(fd, &read_fds);
 	
 	//Ponemos el maximo tiempo de espera
 	struct timeval timeout;
-	int st_out = t_out/1000;
-	timeout.tv_sec = st_out;
-	timeout.tv_usec = t_out-st_out*1000;
+	timeout.tv_sec = 0;
+	timeout.tv_usec = t_out;
 	
 	// Select comprueba cuando el teclado esta listo para ser leido(hay una entrada de datos)
 	// Una vez hecho esto leemos esa entrada con read
 	if (select(fd + 1, &read_fds, NULL, NULL, &timeout) == 1){
 		n = read(fd, &ev, sizeof ev);
-		if (ev.type == EV_KEY && ev.value == 1)return (int)ev.code;
+		if (ev.type == EV_KEY && ev.value == 1){
+			usleep(t_out/2);
+			return (int)ev.code;
+		}
+		return -1;
 	}else{
-	
+		return 0;
 	}
 }
 

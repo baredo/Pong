@@ -16,15 +16,18 @@ int main(void){
 	};
 	struct str_pelota pelota;
 	pelota.y = 3;
-	pelota.x = 16;
-	pelota.vel_x = 1;
+	pelota.x = 36;
+	pelota.vel_x = -2;
 	pelota.vel_y = 1;	
 	
 	//Obtenemos el descriptor de fichero del teclado
 	int fd = init_key_ev(); 
 	while(1){
 		//Recogemos la tecla pulada
-		k_code = get_key_ev(fd,5000);
+		do{
+		k_code = get_key_ev(fd,200000);
+		}while(k_code == -1);
+		
 		//Comprobamos las teclas
 		if(k_code == 103 && pos > 0) pos--;
 		if(k_code == 108 && pos < 9) pos++;
@@ -40,7 +43,15 @@ int main(void){
 		
 		//Movemos la pelota
 		tablero[pelota.y][pelota.x]=0;
-		pelota.x += pelota.vel_x;
+		if(pelota.x + pelota.vel_x > 44){
+			int vel_real = -1*pelota.vel_x-(44-pelota.x);
+			pelota.vel_x = pelota.vel_x*-1;
+			pelota.x += vel_real;
+		}else if(pelota.x + pelota.vel_x < 0 && pelota.y == pos){
+			int vel_real = -1*pelota.vel_x-(-pelota.x);
+			pelota.vel_x = pelota.vel_x*-1;
+			pelota.x += vel_real;
+		}else pelota.x += pelota.vel_x;
 		if(pelota.y+pelota.vel_y > 9 ){
 			int vel_real = -1*pelota.vel_y-(9-pelota.y);
 			pelota.vel_y = pelota.vel_y*-1;
@@ -52,7 +63,7 @@ int main(void){
 		}else pelota.y += pelota.vel_y;
 		tablero[pelota.y][pelota.x]=1;		
 
-		//Dibujamos la pantalla provisional
+		//Dibujamos la pantalla
 		system("clear");	
 		printf("#################################################\n");
 		for(int i=0; i<TABLERO_ALTO; i++){
