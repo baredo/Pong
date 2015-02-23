@@ -1,12 +1,12 @@
-CFLAGS=
+CFLAGS=-std=c99
 OBJETOS=menu.o keyev.o
 FUENTES=menu.c keyev.c
 
-pong : $(OBJETOS)
-	gcc $(OBJETOS) -o pong
+pong : $(OBJETOS) 
+	gcc $(OBJETOS) -o pong 
 
 depend:
-	makedepend $(CFLAGS) $(FUENTES)
+	makedepend $(FUENTES)
 # DO NOT DELETE
 
 menu.o: /usr/include/stdio.h /usr/include/features.h
