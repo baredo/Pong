@@ -29,7 +29,7 @@ int get_key_ev(int fd,int t_out){
 	// Una vez hecho esto leemos esa entrada con read
 	if (select(fd + 1, &read_fds, NULL, NULL, &timeout) == 1){
 		n = read(fd, &ev, sizeof ev);
-		if (ev.type == EV_KEY && ev.value >= 1 && ev.value <= 2)return (int)ev.code;
+		if (ev.type == EV_KEY && ev.value == 1)return (int)ev.code;
 	}else{
 	
 	}
