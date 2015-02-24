@@ -11,12 +11,12 @@
 # Principales.
 # Manejar eventos del teclado				[x]
 # Manejar la interfaz en la terminal		[x]
-# Añadir la mecanica del juego				[60%]
+# Añadir la mecanica del juego				[90%]
 # Añadir inteligencia artificial basica		[]
 
 # Secundarios.
 # Añadir sonidos/musica						[]
-# Añadir marcadores a la interfaz			[]
+# Añadir marcadores a la interfaz			[5%]
 # Añadir power-ups							[]
 # Añadir controles para un segundo jugador 	[]
 # Añadir un menu del juego					[]
