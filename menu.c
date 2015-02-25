@@ -3,6 +3,7 @@
 
 #define TABLERO_ANCHO 45 
 #define TABLERO_ALTO 10
+#define START_TIME_OUT 200000
 
 struct str_pelota{
 	int x;
@@ -12,14 +13,14 @@ struct str_pelota{
 };
 
 int main(void){
-	int cont_jugador=0;
+	int cont_jugador=0, puntuacion=0;
 	//Iniciamos posicion de la barra del jugador
 	short pos[TABLERO_ALTO];
 	for(int i=0; i<TABLERO_ALTO; i++){
 		pos[i]=0;
 	}
 	pos[3]=1;
-	
+		
 	//Iniciamos la pelota
 	struct str_pelota pelota;
 	pelota.y = 3;
@@ -30,12 +31,20 @@ int main(void){
 	//Obtenemos el descriptor de fichero del teclado
 	int k_code=0;
 	int fd = init_key_ev(); 
+	int time_out = START_TIME_OUT;
+	int time_out_vel = 1000;
+
 	while(1){
 		//Recogemos la tecla pulada
 		do{
-		k_code = get_key_ev(fd,200000);
-		}while(k_code == -1);
+			k_code = get_key_ev(fd,time_out);
+		}while(k_code == -1); //Recogera el evento tecla mientras que salga mediante una tecla k_code > 0, o se agote el tiempo k_code = 0;
 		
+		//Actualizamos el timeout //El juego cada vez ira mas rapido
+		if(time_out >50000) time_out -= time_out_vel;
+		//Actualizamos puntuacion
+		puntuacion += (START_TIME_OUT-time_out)/1000;
+
 		//Comprobamos las teclas
 		//Subir barra
 		if(k_code == 103 && !pos[0]){
@@ -87,7 +96,9 @@ int main(void){
 			pelota.vel_y = pelota.vel_y*-1;
 		}else if(pelota.x + pelota.vel_x < 0){//La pelota ha entrado en el marcador del jugador
 			cont_jugador++;
-			pelota.x = 16; //random(central)
+			time_out = START_TIME_OUT;
+			pelota.x = TABLERO_ANCHO/2;
+			pelota.vel_x *= -1;	
 		}else pelota.x += pelota.vel_x;
 		
 		//Calculamos su posicion en y
@@ -115,6 +126,6 @@ int main(void){
 			printf(" #\n");
 		}
 		printf("#################################################\n");
-		printf("Fallos: %d\n",cont_jugador);
+		printf("Fallos: %d    Velocidad: %d    Puntos: %d\n",cont_jugador,(START_TIME_OUT-time_out)/1000,puntuacion);
 	}
 }
