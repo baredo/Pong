@@ -4,6 +4,7 @@
 #define TABLERO_ANCHO 45 
 #define TABLERO_ALTO 10
 #define START_TIME_OUT 200000
+#define NUM_MENU_OPTIONS 2
 
 struct str_pelota{
 	int x;
@@ -11,6 +12,7 @@ struct str_pelota{
 	int vel_x;
 	int vel_y;
 };
+char menu_option[NUM_MENU_OPTIONS][10] = {{"Jugar"},{"Salir"}};
 
 int main(void){
 	int cont_jugador=0, puntuacion=0;
@@ -33,7 +35,38 @@ int main(void){
 	int fd = init_key_ev(); 
 	int time_out = START_TIME_OUT;
 	int time_out_vel = 1000;
-
+	
+	//Menu del juego	
+	int puntero = 0;	
+	while(1){
+		do{
+			k_code = get_key_ev(fd,time_out*5);
+		}while(k_code == -1); //Recogera el evento tecla mientras que salga mediante una tecla k_code > 0, o se agote el tiempo k_code = 0;
+		
+		//Subir puntero 
+		if(k_code == 103 && puntero > 0){
+			puntero--;
+		} 
+		//Bajar puntero
+		if(k_code == 108 && puntero < 1){
+			puntero++;
+		}
+		//espacio, elige la opcion
+		if(k_code == 57){
+			if(puntero == 0) break; else if(puntero == 1) return 0;
+		}
+		
+		//Dibuja en pantalla
+		system("clear");
+		printf("#################################################\n");
+		printf("\n\n\n\n");
+		for(int i=0; i<NUM_MENU_OPTIONS; i++){
+			printf("\t"); if(puntero == i) printf(">"); printf("%s\n\n",menu_option[i]);
+		}
+		printf("\n\n\n\n");
+		printf("#################################################\n");
+	}//Fin del menu
+	
 	while(1){
 		//Recogemos la tecla pulada
 		do{
